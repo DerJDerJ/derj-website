@@ -47,9 +47,9 @@
     --colA:#0a3333;          /* palette color A */
     --colB:#ff3660;          /* palette color B = UI accent */
     --neon:#ff3660;
-    --head:#eceaf2;          /* headings — toned down from pure white */
-    --ink:#cfcad9;           /* body text */
-    --muted:#9c97ab;
+    --head:#f5f3fa;
+    --ink:#e4e0ee;
+    --muted:#b8b3c7;
     --display:"Space Grotesk", system-ui, sans-serif;
     --industrial:"Archivo Black","Anton",sans-serif;
     --body:"Inter", system-ui, sans-serif;
@@ -121,7 +121,7 @@
   .logo-wrap{position:relative;display:inline-block;margin:1.4rem 0 1.2rem;transform:skewX(-7deg);overflow:visible}
   .hero-glow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:210%;height:280%;z-index:-1;pointer-events:none;
     background:radial-gradient(42% 60% at 22% 50%, var(--colA), transparent 72%),radial-gradient(42% 60% at 78% 50%, var(--colB), transparent 72%);
-    filter:blur(60px);opacity:.82}
+    filter:blur(60px);opacity:.45}
   #logo{position:relative;font-family:var(--industrial);font-style:italic;font-weight:400;font-size:clamp(4rem,18vw,15rem);line-height:1;
     letter-spacing:-.04em;text-transform:uppercase;color:var(--head);cursor:pointer;overflow:visible;
     text-decoration:line-through;text-decoration-color:var(--colB);text-decoration-thickness:.045em;
@@ -290,7 +290,7 @@
         <p class="lede gx" style="margin-top:.4rem">Techno. Licht. Raum. Drei Disziplinen, eine Nacht —
           gebaut für diejenigen, die nicht nur hören, sondern sehen.</p>
         <div class="tag-row">
-          <a href="#music" class="tag gx">Techno</a><a href="#lighting" class="tag gx">Light Design</a><a href="#projection" class="tag gx">Projection</a><a href="#gigs" class="tag gx">Events</a>
+          <a href="#music" class="tag gx">Techno</a><a href="#lighting" class="tag gx">Light Design</a><a href="#projection" class="tag gx">Projection</a><a href="#gigs" class="tag gx">Events</a><a href="#releases" class="tag gx">Hören</a><a href="#contact" class="tag gx">Booking</a>
         </div>
       </div>
       <div class="scroll-hint"><span>Scroll</span><span class="bar"></span></div>
@@ -805,17 +805,17 @@
 
     const lowPerf=matchMedia('(pointer:coarse)').matches||(navigator.hardwareConcurrency||4)<=4||innerWidth<768;
     let quality=lowPerf?'low':'high';
-    const Q={ high:{hero:2600,tunnel:5200,grid:[96,56],fog:5,dpr:Math.min(devicePixelRatio,2),grain:true,glitch:true,bloom:0.9},
-              low :{hero:1200,tunnel:2600,grid:[48,30],fog:3,dpr:1,                          grain:false,glitch:false,bloom:0.5} };
+    const Q={ high:{hero:2600,tunnel:5200,grid:[96,56],fog:5,dpr:Math.min(devicePixelRatio,2),grain:true,glitch:true,bloom:0.55},
+              low :{hero:1200,tunnel:2600,grid:[48,30],fog:3,dpr:1,                          grain:false,glitch:false,bloom:0.3} };
     let cfg=Q[quality];
 
     const canvas=document.getElementById('gl');
     const renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
     renderer.setPixelRatio(cfg.dpr); renderer.setSize(innerWidth,innerHeight);
-    renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; renderer.outputColorSpace=THREE.SRGBColorSpace;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=0.85; renderer.outputColorSpace=THREE.SRGBColorSpace;
 
     const scene=new THREE.Scene();
-    scene.fog=new THREE.FogExp2(0x0a0a0a,0.0026);
+    scene.fog=new THREE.FogExp2(0x0a0a0a,0.0042);
     const camera=new THREE.PerspectiveCamera(40,innerWidth/innerHeight,0.1,900);
     camera.position.set(0,0,18);
 
@@ -1040,15 +1040,15 @@
         glitchPass.uniforms.uAmount.value=clamp(base+glitchBurst.v*0.7*zone,0,1);
         glitchPass.uniforms.uBeat.value=beat*zone;glitchPass.uniforms.uTime.value=t;}
 
-      bloom.strength=bloomBase+lightning.v*0.9;
-      veil.style.opacity=clamp((-cz-298)/55,0,0.82).toFixed(3);
+      bloom.strength=bloomBase+lightning.v*0.5;
+      veil.style.opacity=clamp((-cz-298)/55,0,0.92).toFixed(3);
       if(grainPass.enabled)grainPass.uniforms.uTime.value=t;
 
       composer.render();
 
       if(quality==='high'&&!downgraded){fps.push(1/Math.max(dt,0.001));
         if(t-lastCheck>2){const avg=fps.reduce((a,b)=>a+b,0)/fps.length;fps=[];lastCheck=t;
-          if(avg<38){downgraded=true;renderer.setPixelRatio(1);composer.setPixelRatio(1);grainPass.enabled=false;bloomBase=0.6;
+          if(avg<38){downgraded=true;renderer.setPixelRatio(1);composer.setPixelRatio(1);grainPass.enabled=false;bloomBase=0.35;
             console.warn('[DerJ] quality downgraded — avg fps',avg.toFixed(0));}}}
     }
 
