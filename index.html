@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>DerJ — DJ · Licht · Raum</title>
+<meta name="description" content="DerJ — DJ, Licht-Designer & Veranstalter aus München. Sound, Licht und Raum als ein Erlebnis." />
+
+<!-- SEO: Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="DerJ — DJ · Licht · Raum" />
+<meta property="og:description" content="DJ, Licht-Designer & Veranstalter aus München. Techno, Lichtdesign und Projektion als Gesamterlebnis." />
+<meta property="og:url" content="https://derj.de" />
+<meta property="og:site_name" content="DerJ" />
+<meta property="og:locale" content="de_DE" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DerJ — DJ · Licht · Raum" />
+<meta name="twitter:description" content="DJ, Licht-Designer & Veranstalter aus München. Techno, Lichtdesign und Projektion als Gesamterlebnis." />
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-weight='bold' font-style='italic' fill='%23ff3660'>D</text></svg>" />
+
+<!-- SEO: JSON-LD MusicGroup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  "name": "DerJ",
+  "description": "DJ, Licht-Designer & Veranstalter aus München. Techno, Lichtdesign und Projektion als Gesamterlebnis.",
+  "url": "https://derj.de",
+  "genre": "Techno",
+  "sameAs": [
+    "https://soundcloud.com/derj-official",
+    "https://instagram.com/derj.official",
+    "https://www.facebook.com/DerJ.official"
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="fonts/fonts.css" />
+
+<style>
+  :root{
+    --void:#0a0a0a;
+    --void-2:#060606;
+    --colA:#0a3333;          /* palette color A */
+    --colB:#ff3660;          /* palette color B = UI accent */
+    --neon:#ff3660;
+    --head:#eceaf2;          /* headings — toned down from pure white */
+    --ink:#cfcad9;           /* body text */
+    --muted:#9c97ab;
+    --display:"Space Grotesk", system-ui, sans-serif;
+    --industrial:"Archivo Black","Anton",sans-serif;
+    --body:"Inter", system-ui, sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--void);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:default}
+  ::selection{background:var(--neon);color:#0a0a0a}
+
+  #gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+  #veil{position:fixed;inset:0;z-index:1;background:radial-gradient(120% 120% at 50% 50%, transparent 0%, var(--void) 92%);opacity:0;pointer-events:none;will-change:opacity}
+  #strobe{position:fixed;inset:0;z-index:2;background:#eaf0ff;opacity:0;pointer-events:none;mix-blend-mode:screen}
+
+  #scroll-root{position:relative;z-index:3}
+  section{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    padding:clamp(2rem,7vw,7rem) clamp(1.5rem,6vw,3rem);pointer-events:none}
+  section .inner{position:relative;width:100%;max-width:760px;margin:0 auto;pointer-events:auto;display:flex;flex-direction:column;align-items:center}
+  /* readability scrim behind text — soft dark halo, no hard box */
+  section .inner::before{content:"";position:absolute;inset:-10% -12%;z-index:-1;
+    background:radial-gradient(60% 58% at 50% 50%, rgba(6,6,9,.66), rgba(6,6,9,0) 76%);filter:blur(10px)}
+  /* hero gets no scrim so the dual-color logo glow can spill freely */
+  #hero .inner::before{display:none}
+  /* lock line metrics so font-swap glitch can't change line height (no vertical jitter) */
+  h2.gx,.lede.gx,.meta .gx,.eyebrow.gx,.tag.gx,.brand.gx{font-variant-ligatures:none}
+  h2.gx{min-height:1.1em}
+
+  /* nav + palette */
+  nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:1.05rem clamp(1.2rem,5vw,3rem)}
+  nav *{text-shadow:0 1px 16px rgba(0,0,0,.85)}
+  .nav-left{display:flex;align-items:center;gap:.8rem}
+  .palette{position:relative}
+  .pal-chip{width:20px;height:20px;border-radius:50%;border:1px solid #ffffff44;cursor:pointer;padding:0;overflow:hidden;
+    background:linear-gradient(135deg,var(--colA) 0 50%,var(--colB) 50% 100%);box-shadow:0 0 12px -2px var(--colB)}
+  .pal-chip:hover{transform:scale(1.12)}
+  .pal-menu{position:absolute;top:30px;left:0;background:#0c0c10;border:1px solid #ffffff22;border-radius:10px;padding:.5rem;display:none;
+    grid-template-columns:1fr 1fr;gap:.35rem;width:236px;box-shadow:0 24px 70px -30px #000}
+  .pal-menu.open{display:grid}
+  .pal-opt{display:flex;align-items:center;gap:.5rem;padding:.4rem .5rem;border-radius:7px;cursor:pointer;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .pal-opt:hover{background:#ffffff10;color:#fff}
+  .pal-opt .sw{width:16px;height:16px;border-radius:50%;flex:0 0 auto;border:1px solid #ffffff33}
+  .brand{font-family:var(--industrial);font-style:italic;letter-spacing:.02em;font-size:1.05rem;text-transform:uppercase;color:#fff}
+  nav .links{display:flex;gap:1.2rem}
+  nav a{color:#fff;text-decoration:none;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;opacity:.62;transition:opacity .3s}
+  nav a:hover,nav a.active{opacity:1}
+  /* burger button — hidden on desktop, visible on mobile */
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;z-index:11}
+  .burger span{width:22px;height:2px;background:#fff;transition:.3s;transform-origin:center}
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger.open span:nth-child(2){opacity:0}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  @media (max-width:860px){
+    .burger{display:flex}
+    nav .links{position:fixed;inset:0;z-index:9;background:rgba(6,6,8,.96);backdrop-filter:blur(10px);flex-direction:column;justify-content:center;align-items:center;gap:2rem;transform:translateX(100%);transition:transform .4s ease}
+    nav .links.open{transform:translateX(0)}
+    nav .links a{font-size:1rem;letter-spacing:.28em}
+  }
+
+  /* typography — ITALIC SUPERBOLD display */
+  .eyebrow{font-family:var(--display);font-weight:700;font-size:.72rem;letter-spacing:.42em;text-transform:uppercase;color:var(--neon);margin-bottom:1.4rem;
+    display:flex;align-items:center;gap:.8rem;justify-content:center;filter:drop-shadow(0 0 10px var(--neon))}
+  .eyebrow::before,.eyebrow::after{content:"";width:30px;height:1px;background:var(--neon)}
+  h2{font-family:var(--industrial);font-style:italic;font-weight:400;font-size:clamp(2.2rem,7.5vw,5rem);line-height:.98;letter-spacing:-.01em;
+    text-transform:uppercase;margin-bottom:1.6rem;color:var(--head);text-shadow:0 3px 30px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.6)}
+  .lede{font-size:clamp(1.04rem,2vw,1.28rem);color:var(--ink);max-width:48ch;font-weight:300;text-shadow:0 2px 20px rgba(0,0,0,.85)}
+
+  /* hero logo — slanted, struck-through, TV-glitch */
+  .logo-wrap{position:relative;display:inline-block;margin:1.4rem 0 1.2rem;transform:skewX(-7deg);overflow:visible}
+  .hero-glow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:210%;height:280%;z-index:-1;pointer-events:none;
+    background:radial-gradient(42% 60% at 22% 50%, var(--colA), transparent 72%),radial-gradient(42% 60% at 78% 50%, var(--colB), transparent 72%);
+    filter:blur(60px);opacity:.82}
+  #logo{position:relative;font-family:var(--industrial);font-style:italic;font-weight:400;font-size:clamp(4rem,18vw,15rem);line-height:1;
+    letter-spacing:-.04em;text-transform:uppercase;color:var(--head);cursor:pointer;overflow:visible;
+    text-decoration:line-through;text-decoration-color:var(--colB);text-decoration-thickness:.045em;
+    text-shadow:.022em 0 rgba(0,225,255,.45), -.022em 0 var(--colB), 0 4px 30px rgba(0,0,0,.6)}
+  /* TV glitch ONLY while hovering the logo */
+  #logo.tv{animation:tv .5s steps(1) infinite}
+  #logo .glow{color:var(--colB);text-shadow:0 0 38px var(--colB),0 0 95px var(--colB)}
+  @keyframes tv{
+    0%,40%,100%{transform:translateX(0);clip-path:inset(0 0 0 0)}
+    12%{transform:translateX(-4px);clip-path:inset(16% 0 52% 0)}
+    24%{transform:translateX(5px);clip-path:inset(58% 0 12% 0)}
+    36%{transform:translateX(-2px);clip-path:inset(34% 0 30% 0)}
+    52%{transform:translateX(3px);clip-path:inset(44% 0 28% 0)}
+    68%{transform:translateX(-3px);clip-path:inset(8% 0 70% 0)}
+  }
+  .scroll-hint{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);font-size:.64rem;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:.7rem;pointer-events:none}
+  .scroll-hint .bar{width:1px;height:46px;background:linear-gradient(var(--neon),transparent);animation:drop 1.9s infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.1%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  .tag-row{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem;justify-content:center}
+  .tag{border:1px solid var(--neon);padding:.4rem .9rem;border-radius:99px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--neon)}
+  .hero-cta{display:flex;gap:1rem;margin-top:2.2rem;flex-wrap:wrap;justify-content:center}
+  .cta.ghost{background:transparent;color:var(--neon);border:1px solid var(--neon)}
+  .cta.ghost:hover{background:var(--neon);color:#0a0a0a}
+
+  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.4rem;margin-top:2.6rem;width:100%;max-width:640px}
+  .meta .k{font-family:var(--display);font-weight:700;color:var(--neon);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
+  .meta .v{color:var(--head);font-size:.96rem;text-shadow:0 2px 14px rgba(0,0,0,.8)}
+
+  .venue-chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:560px;margin-top:1.6rem}
+  .venue-chip{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.04);border:1px solid #ffffff18;padding:.5rem .9rem;border-radius:99px;transition:color .3s,border-color .3s}
+  .venue-chip:hover{color:var(--neon);border-color:var(--neon)}
+  a.venue-chip{text-decoration:none}
+  .venue-chip.major{font-weight:700;color:var(--head);border-color:var(--neon)55}
+  .venue-section-label{font-family:var(--display);font-weight:700;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--neon);margin-top:2.6rem;margin-bottom:.4rem;width:100%;text-align:center;opacity:.7}
+
+  #releases{padding-left:clamp(1rem,4vw,3rem);padding-right:clamp(1rem,4vw,3rem)}
+  #releases .inner{max-width:1000px}
+  .sc-stage{position:relative;width:100%;margin-top:2.4rem;border-radius:14px;overflow:hidden;border:1px solid var(--neon);
+    box-shadow:0 30px 90px -36px var(--neon),inset 0 0 100px rgba(0,0,0,.85)}
+  .sc-stage::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:14px;box-shadow:inset 0 0 200px 50px rgba(0,0,0,.92)}
+  .sc-stage::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:14px;background:radial-gradient(118% 134% at 50% 50%, transparent 24%, rgba(0,0,0,.94) 100%)}
+  .sc-stage iframe{display:block;width:100%;height:min(64vh,560px);border:0;background:var(--void-2)}
+
+  #art-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+  #art .spray-title{font-family:var(--industrial);font-style:italic;font-size:clamp(3rem,13vw,10rem);line-height:.9;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.6px var(--neon);filter:drop-shadow(0 0 26px var(--neon))}
+
+  #contact .inner{max-width:560px}
+  form{display:flex;flex-direction:column;gap:1.4rem;margin-top:2.4rem;width:100%;text-align:left}
+  .field{position:relative}
+  .field label{position:absolute;top:14px;left:0;color:var(--muted);font-size:1rem;transition:.25s ease;pointer-events:none}
+  .field input,.field textarea{width:100%;background:rgba(0,0,0,.25);border:none;border-bottom:1px solid #ffffff33;padding:14px 12px 10px;color:#fff;font-family:var(--body);font-size:1rem;outline:none;transition:border-color .3s,box-shadow .3s;resize:none;border-radius:6px 6px 0 0}
+  .field textarea{min-height:90px}
+  .field input:focus,.field textarea:focus{border-color:var(--neon);box-shadow:0 6px 30px -10px var(--neon)}
+  .field input:focus + label,.field input:valid + label,.field textarea:focus + label,.field textarea:valid + label{top:-14px;font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--neon)}
+  button.cta{background:var(--neon);color:#0a0a0a;border:none;font-family:var(--display);font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.78rem;padding:1rem 2.4rem;border-radius:99px;cursor:pointer;transition:transform .25s,box-shadow .25s}
+  form button.cta{align-self:flex-start;margin-top:.6rem}
+  button.cta:hover{transform:translateY(-2px);box-shadow:0 14px 40px -12px var(--neon)}
+  .direct{margin-top:1.8rem;font-size:.88rem;color:var(--muted)}
+  .direct a{color:var(--neon);text-decoration:none}
+  .social{display:flex;gap:1.4rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center}
+  .social a{color:var(--muted);text-decoration:none;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;transition:color .3s}
+  .social a:hover{color:var(--neon)}
+
+  footer{border-top:1px solid #ffffff14;padding:2rem clamp(1.5rem,6vw,7rem);display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;color:var(--muted);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;position:relative;z-index:3}
+  footer a{color:var(--muted);text-decoration:none;transition:color .3s}
+  footer a:hover{color:var(--neon)}
+  .vault-trigger{cursor:pointer}
+
+  .gl{display:inline-block;line-height:inherit;text-align:center;vertical-align:baseline;will-change:font-family,transform,color}
+  .gl-word{display:inline-block;white-space:nowrap}
+  .gl.blip{color:var(--colB);text-shadow:0 0 12px var(--colB)}
+  .gl.blipA{color:var(--colA);text-shadow:0 0 12px var(--colA)}
+
+  /* ---------------- VAULT ---------------- */
+  .vault{position:fixed;inset:0;z-index:60;display:none}
+  .vault.open{display:block}
+  /* gate */
+  .vault-gate{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,5,7,.86);backdrop-filter:blur(8px)}
+  .vault-box{position:relative;width:min(440px,90vw);background:#0d0d10;border:1px solid var(--neon);border-radius:14px;padding:2.4rem;box-shadow:0 30px 90px -30px var(--neon)}
+  .vault-box h3{font-family:var(--industrial);font-style:italic;font-size:2rem;text-transform:uppercase;margin:.2rem 0 1rem;color:#fff}
+  .vault-box input{width:100%;background:rgba(0,0,0,.3);border:1px solid #ffffff33;border-radius:8px;padding:12px;color:#fff;font-size:1rem;outline:none;margin:1rem 0;font-family:var(--body)}
+  .vault-box input:focus{border-color:var(--neon);box-shadow:0 0 20px -6px var(--neon)}
+  .vault-close{position:absolute;top:.7rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.8rem;cursor:pointer;line-height:1;z-index:5}
+  .vault-err{color:var(--neon);font-size:.8rem;min-height:1.2em;margin-top:.4rem}
+
+  /* inside: sunrise surface */
+  .vault-inside{position:absolute;inset:0;display:none;align-items:center;justify-content:center;overflow:hidden}
+  .vault-inside.show{display:flex}
+  .sunrise{position:absolute;inset:0;z-index:0;
+    background:linear-gradient(0deg, #0a0a12 0%, var(--colA) 26%, var(--colB) 52%, #ff9e5e 76%, #ffd89b 100%);
+    background-size:100% 320%;background-position:0 100%;animation:sun 16s ease-in-out infinite alternate}
+  @keyframes sun{0%{background-position:0 100%}100%{background-position:0 6%}}
+  .sunrise::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 120%, rgba(255,225,180,.5), transparent 60%)}
+  .vault-fx{position:absolute;inset:0;z-index:2;pointer-events:none;mix-blend-mode:screen;opacity:0;transition:opacity .9s ease}
+  .vault-fx.on{opacity:1;animation:mfx .09s steps(2) infinite}
+  @keyframes mfx{
+    0%{background:var(--colB);transform:translate(-7px,0) skewX(4deg);filter:hue-rotate(0deg)}
+    20%{background:#fff;transform:translate(8px,3px) skewX(-3deg)}
+    40%{background:var(--colA);transform:translate(-5px,-4px)}
+    60%{background:#000;transform:translate(6px,2px) skewX(5deg);filter:hue-rotate(180deg)}
+    80%{background:var(--colB);transform:translate(-3px,4px)}
+    100%{background:#fff;transform:translate(4px,-2px);filter:hue-rotate(320deg)}
+  }
+  .vault-welcome{position:relative;z-index:3;max-width:560px;text-align:center;padding:2rem;opacity:0;transform:translateY(20px);transition:opacity 1.2s ease,transform 1.2s ease;color:#1a0f10}
+  .vault-welcome.show{opacity:1;transform:none}
+  .vault-welcome .eyebrow{color:#3a1f12;justify-content:center;filter:none}
+  .vault-welcome .eyebrow::before,.vault-welcome .eyebrow::after{background:#3a1f12}
+  .vault-welcome h2{font-family:var(--industrial);font-style:italic;font-size:clamp(2.4rem,8vw,4.6rem);text-transform:uppercase;color:#fff;text-shadow:0 4px 30px rgba(120,40,20,.5);margin-bottom:1rem}
+  .vault-welcome p{color:#2a1714;font-weight:400;font-size:1.05rem;max-width:42ch;margin:0 auto 1.6rem}
+  .nl{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+  .nl input{background:rgba(255,255,255,.85);border:none;border-radius:99px;padding:.95rem 1.3rem;font-size:1rem;font-family:var(--body);min-width:240px;outline:none;color:#1a0f10}
+  .nl input:focus{box-shadow:0 0 0 2px #fff}
+  .nl .cta{background:#1a0f10;color:#fff}
+  .nl-done{margin-top:1rem;color:#fff;font-weight:500;min-height:1.2em}
+
+  #loader{position:fixed;inset:0;z-index:70;background:var(--void);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.4rem;transition:opacity .8s ease}
+  #loader.done{opacity:0;pointer-events:none}
+  #loader .mark{font-family:var(--industrial);font-style:italic;letter-spacing:.1em;font-size:1.3rem;text-transform:uppercase;color:#fff}
+  #loader .track{width:160px;height:1px;background:#ffffff22;overflow:hidden}
+  #loader .track i{display:block;height:100%;width:40%;background:var(--neon);animation:load 1.1s infinite ease-in-out}
+  @keyframes load{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+
+  body.fallback #gl,body.fallback #strobe{display:none}
+  body.fallback #veil{opacity:1;background:radial-gradient(60% 60% at 20% 12%, var(--colB), transparent 60%),radial-gradient(70% 70% at 88% 82%, var(--colA), transparent 60%),linear-gradient(var(--void),var(--void-2))}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.scroll-hint .bar,#logo{animation:none}#loader .track i{animation:none;width:100%}}
+</style>
+</head>
+<body>
+
+  <div id="loader"><div class="mark">DERJ</div><div class="track"><i></i></div></div>
+
+  <canvas id="gl"></canvas>
+  <div id="veil"></div>
+  <div id="strobe"></div>
+
+  <nav>
+    <div class="nav-left">
+      <div class="palette">
+        <button class="pal-chip" id="pal-chip" title="Farbpalette wählen" aria-label="Farbpalette"></button>
+        <div class="pal-menu" id="pal-menu"></div>
+      </div>
+      <div class="brand gx">DerJ</div>
+    </div>
+    <div class="links">
+      <a href="#about">Über</a>
+      <a href="#music">Musik</a>
+      <a href="#gigs">Termine</a>
+      <a href="#lighting">Licht</a>
+      <a href="#projection">Mapping</a>
+      <a href="#releases">Mixtapes</a>
+      <a href="#art">Kunst</a>
+      <a href="#contact">Kontakt</a>
+    </div>
+    <div class="burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></div>
+  </nav>
+
+  <main id="scroll-root">
+
+    <section id="hero">
+      <div class="inner">
+        <div class="eyebrow gx">DJ · Licht-Designer · Veranstalter</div>
+        <div class="logo-wrap"><span class="hero-glow"></span><h1 id="logo">Der<span class="glow">J</span></h1></div>
+        <p class="lede gx" style="margin-top:.4rem">Techno. Licht. Raum. Drei Disziplinen, eine Nacht —
+          gebaut für diejenigen, die nicht nur hören, sondern sehen.</p>
+        <div class="tag-row">
+          <span class="tag gx">Techno</span><span class="tag gx">Light Design</span><span class="tag gx">Projection</span><span class="tag gx">Events</span>
+        </div>
+        <div class="hero-cta">
+          <a href="#contact" class="cta">Booking</a>
+          <a href="#releases" class="cta ghost">Hören</a>
+        </div>
+      </div>
+      <div class="scroll-hint"><span>Scroll</span><span class="bar"></span></div>
+    </section>
+
+    <section id="about">
+      <div class="inner">
+        <div class="eyebrow gx">00 — Über</div>
+        <h2 class="gx">Sound trifft Raum.</h2>
+        <p class="lede gx">Seit 2008 steht DerJ in Münchner Clubs — hinter den Decks, am Lichtpult,
+          und manchmal mit der Dose an der Wand. Was als DJ-Set begann, wurde zu einem Gesamtbild:
+          Techno, der nicht nur klingt, sondern aussieht. Licht, das den Takt hält. Räume, die sich
+          verformen, sobald der Bass fällt.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Drei Disziplinen, eine Handschrift. Keine Auftritte
+          nach Baukasten — jede Nacht wird gebaut, nicht zusammengestellt. Roh, präzise,
+          kompromisslos. Wer einmal dabei war, weiß, dass es nicht um Booking-Charts geht. Es geht
+          darum, einen Raum so aufzuladen, dass er bleibt — bis der Letzte geht.</p>
+        <p class="lede gx" style="margin-top:1.4rem;opacity:.7;font-style:italic">"We did not ask for this
+          room or this music. We were invited in. Therefore, because the dark surrounds us, let us
+          turn our faces to the light. We have been given pain to be astounded by joy. We have been
+          given life to deny death. We did not ask for this room or this music. But because we are
+          here, let us dance."</p>
+        <p class="lede gx" style="margin-top:1.4rem">Gebaut in München. Gepielt auf dem Feel Festival, im Harry Klein,
+          Rote Sonne, Bahnwärter Thiel und überall dort, wo der Bass tief genug ist.</p>
+        <div class="meta">
+          <div><div class="k gx">Base</div><div class="v gx">München</div></div>
+          <div><div class="k gx">Aktiv seit</div><div class="v gx">2008</div></div>
+          <div><div class="k gx">Disziplinen</div><div class="v gx">DJ · Licht · Mapping · Graffiti</div></div>
+          <div><div class="k gx">Einflüsse</div><div class="v gx">Detroit Techno · Hypnotic · Hard Groove</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="music">
+      <div class="inner">
+        <div class="eyebrow gx">01 — Sound</div>
+        <h2 class="gx">DJ / Musik</h2>
+        <p class="lede gx">Treibender, hypnotischer Techno. Lange Bögen, präzise Übergänge, ein Set,
+          das sich wie ein einziger Atemzug durch die Nacht zieht — von dunklem Hall bis zum
+          gleißenden Peak. Kein Spiel mit Hits. Ein Bauwerk aus Druck, Dichte und dem Moment,
+          in dem der Raum kippt.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Opening: langsam aufbauen, Halle weiten, Raum geben.
+          Peak-Time: treibend, direkt, kein Entkommen. Closing: der letzte Bogen, wenn die Lichter
+          schon brennen und der Bass noch nicht gehen will. Drei Phasen, eine Linie — der Bogen
+          hält durch, egal wie lang die Nacht wird.</p>
+        <div class="meta">
+          <div><div class="k gx">Genre</div><div class="v gx">Techno · Hypnotic · Hard Groove</div></div>
+          <div><div class="k gx">Format</div><div class="v gx">Vinyl · Hybrid · Open / Closing</div></div>
+          <div><div class="k gx">Sets</div><div class="v gx">90 – 240 min</div></div>
+          <div><div class="k gx">Referenzen</div><div class="v gx">Feel Festival · Harry Klein · Rote Sonne</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gigs">
+      <div class="inner">
+        <div class="eyebrow gx">02 — Termine</div>
+        <h2 class="gx">Upcoming Gigs</h2>
+        <p class="lede gx">Wo es als Nächstes passiert. Kommende Dates — bevor sie irgendwo
+          anders stehen.</p>
+
+        <div class="gig-list" style="margin-top:2.4rem;width:100%;max-width:560px">
+          <div class="gig-item" style="display:flex;justify-content:space-between;align-items:baseline;padding:.8rem 0;border-bottom:1px solid #ffffff14">
+            <div><span class="gx" style="font-weight:700;color:var(--head)">IsarBass @ Zur Gruam</span><br><span class="gx" style="font-size:.82rem;color:var(--muted)">Zur Gruam · München</span></div>
+            <span class="gx" style="font-size:.82rem;color:var(--neon);white-space:nowrap">6.8.2026</span>
+          </div>
+          <div class="gig-item" style="display:flex;justify-content:space-between;align-items:baseline;padding:.8rem 0;border-bottom:1px solid #ffffff14">
+            <div><span class="gx" style="font-weight:700;color:var(--head)">Kinky Karneval @ Lieberscholli</span><br><span class="gx" style="font-size:.82rem;color:var(--muted)">Lieberscholli · München</span></div>
+            <span class="gx" style="font-size:.82rem;color:var(--neon);white-space:nowrap">8.8.2026</span>
+          </div>
+        </div>
+        <p class="gx" style="margin-top:1.2rem;font-size:.82rem;color:var(--muted);font-style:italic">Weitere Dates folgen. Instagram für aktuelles Line-up: @derj.official</p>
+
+        <div class="venue-section-label gx">Referenzen / Venues</div>
+        <p class="lede gx" style="margin-top:.4rem">Wo es passiert ist — Festivals, Clubs und Underground-Locations,
+          gespielt in den letzten Jahren. Klick auf einen Namen für mehr.</p>
+
+        <div class="venue-section-label gx" style="margin-top:2rem;margin-bottom:0">Festivals & Open Airs</div>
+        <div class="venue-chips">
+          <a class="venue-chip major gx" href="https://feel-festival.de" target="_blank" rel="noopener">Feel Festival ↗</a>
+          <a class="venue-chip major gx" href="https://wilde-moehre-festival.de" target="_blank" rel="noopener">Wilde Möhre ↗</a>
+          <a class="venue-chip major gx" href="https://rote-sonne.de" target="_blank" rel="noopener">Rote Sonne ↗</a>
+          <span class="venue-chip gx">Lusatia Festival</span>
+          <span class="venue-chip gx">Masters of Sound Open Air</span>
+        </div>
+
+        <div class="venue-section-label gx">Clubs & Venues</div>
+        <div class="venue-chips">
+          <a class="venue-chip major gx" href="https://harryklein.de" target="_blank" rel="noopener">Harry Klein ↗</a>
+          <a class="venue-chip major gx" href="https://bahnwaerterthiel.de" target="_blank" rel="noopener">Bahnwärter Thiel ↗</a>
+          <a class="venue-chip gx" href="https://unterdeck.de" target="_blank" rel="noopener">Unter Deck ↗</a>
+          <a class="venue-chip gx" href="https://lieberscholli.de" target="_blank" rel="noopener">Lieberscholli ↗</a>
+          <a class="venue-chip gx" href="https://pimpernel.de" target="_blank" rel="noopener">Pimpernel ↗</a>
+          <span class="venue-chip gx">DNA Club</span>
+          <span class="venue-chip gx">Milde Möhre</span>
+          <span class="venue-chip gx">Zur Gruam</span>
+          <span class="venue-chip gx">Club 4e</span>
+        </div>
+
+        <div class="venue-section-label gx">Eigene Reihe</div>
+        <div class="venue-chips">
+          <span class="venue-chip gx" style="border-color:var(--colA)55;color:var(--colA)">F93 — München</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="lighting">
+      <div class="inner">
+        <div class="eyebrow gx">03 — Licht</div>
+        <h2 class="gx">Lighting Design</h2>
+        <p class="lede gx">Lichtdesign für Clubs, Events und Produktionen — vom Konzept bis zur letzten
+          Gobo. Moving Heads, Beams, Strobes: jedes Fixture programmiert, jeder Cue getaktet.
+          Visualisierungen vorab, Timecode-gesteuert oder manuell am Pult — je nachdem, was die
+          Nacht verlangt.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Licht als zweites Instrument. Bewegliche Beams
+          zeichnen Formationen in den Haze — X, V, W. Pulse, die den Bass übersetzen. Strobes, die
+          den Raum für einen Moment auslöschen. Atmosphäre entsteht nicht durch Zufall, sondern
+          durch Programmierung — und manchmal durch ein Gewitter, das einfach kommt.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Auf dieser Seite folgen die Lichter deiner Maus und
+          reagieren auf den Scroll — ein Vorgeschmack darauf, was im Club passiert, wenn das Pult live
+          schaltet.</p>
+        <div class="meta">
+          <div><div class="k gx">Fixtures</div><div class="v gx">Moving Head · Beam · Strobe · LED-Can</div></div>
+          <div><div class="k gx">Control</div><div class="v gx">grandMA2 / 3 · Timecode · MIDI-Trigger</div></div>
+          <div><div class="k gx">Atmosphäre</div><div class="v gx">Haze · Beam · Volumetrik · Low-Fog</div></div>
+          <div><div class="k gx">Service</div><div class="v gx">Konzept · Programmierung · Live-Operation</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projection">
+      <div class="inner">
+        <div class="eyebrow gx">04 — Raum</div>
+        <h2 class="gx">Projection Mapping</h2>
+        <p class="lede gx">Architektur wird zur Leinwand. Projection Mapping für Club-Nächte,
+          Events, Ausstellungen und Installationen — Wände, Objekte, ganze Fassaden. Generative
+          Visuals, die in Echtzeit auf den Takt reagieren: Grids, die sich wellen, Signale, die reißen
+          und neu zusammenlaufen, Geometrien, die die Wand auflösen.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Engine: TouchDesigner und GLSL — pixelgenau
+          gemappt, getimet und auf den Raum abgestimmt. Jede Oberfläche ist eine andere Story.
+          Eine Wand bleibt nicht Wand. Sie wird Bild, Rhythmus, Stimmung — und wenn der Bass fällt,
+          bricht sie auf.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Auf dieser Seite verzerrt der Scroll das Raster in
+          Echtzeit — ein Eindruck davon, wie Mapping einen Raum verformt, wenn man ihn live erlebt.</p>
+        <div class="meta">
+          <div><div class="k gx">Engine</div><div class="v gx">TouchDesigner · GLSL · Resolume</div></div>
+          <div><div class="k gx">Surface</div><div class="v gx">Wände · Fassaden · Objekte · Geometrie</div></div>
+          <div><div class="k gx">Style</div><div class="v gx">Generativ · Grid · Glitch · Reactive</div></div>
+          <div><div class="k gx">Service</div><div class="v gx">Konzept · Content · Mapping · Live-Operation</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="releases">
+      <div class="inner">
+        <div class="eyebrow gx">05 — Hören</div>
+        <h2 class="gx">Mixtapes</h2>
+        <p class="lede gx">Sets und Mixtapes in voller Länge — direkt von SoundCloud. Hypnotische
+          Bögen, treibende Rhythmen, Übergänge, die nicht trennen, sondern tragen. Aufgenommen in
+          einem Rutsch, gespielt wie live — kein Edit, keine Pause, ein einziger Bogen.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Wer wissen will, wie ein DerJ-Set klingt, ohne in
+          den Club zu gehen: hier reinhören. Wer danach wissen will, wie es sich anfühlt: kommen.</p>
+        <div class="sc-stage" id="sc-stage">
+          <iframe title="DerJ auf SoundCloud" allow="autoplay" loading="lazy"
+            src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Fderj-official&color=%23ff3660&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+        </div>
+        <p class="direct">Alle Mixtapes: <a href="https://soundcloud.com/derj-official" target="_blank" rel="noopener">soundcloud.com/derj-official ↗</a></p>
+      </div>
+    </section>
+
+    <section id="art">
+      <canvas id="art-canvas"></canvas>
+      <div class="inner">
+        <div class="eyebrow gx">06 — Kunst</div>
+        <div class="spray-title gx">Graffiti</div>
+        <p class="lede gx" style="margin-top:1.8rem">Aerosol, Schablone, Wall — die visuelle Sprache
+          hinter dem Projekt. Seit den frühen Tagen auf Wänden in München und darüber hinaus. Freehand und
+          Schablone, manchmal beide in einem Stück: die Struktur der Schablone gegen die Energie
+          der freien Hand.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Graffiti ist kein Side-Projekt. Es ist die dritte
+          Disziplin — der visuelle Bass. Dieselbe Energie, die im Set nach vorn drückt, landet hier
+          auf der Wand. Roh, urban, direkt. Kein Atelier, keine Leinwand. Die Wand ist die Bühne,
+          die Dose das Instrument.</p>
+        <p class="lede gx" style="margin-top:1.4rem;opacity:.6;font-style:italic">[Foto-Galerie folgt —
+          DerJ bereitet einen Ordner mit Bildern vor.]</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="inner">
+        <div class="eyebrow gx">07 — Kontakt</div>
+        <h2 class="gx">Booking &amp; Kontakt</h2>
+        <p class="lede gx">DJ-Booking. Lichtproduktion. Projection Mapping. Kollaborationen.
+          Was auch immer du vorhast — wenn es um Sound, Licht oder Raum geht, schreib direkt.</p>
+        <p class="lede gx" style="margin-top:1.4rem">Kurz was du brauchst, wann, wo. Du bekommst
+          Antwort — meistens am selben Tag. Für Seriöses gibt es Tech-Rider und Press-Kit auf
+          Anfrage.</p>
+        <form id="contact-form">
+          <div class="field"><input type="text" id="f-name" required /><label for="f-name">Name</label></div>
+          <div class="field"><input type="email" id="f-email" required /><label for="f-email">E-Mail</label></div>
+          <div class="field"><textarea id="f-msg" required></textarea><label for="f-msg">Nachricht</label></div>
+          <button class="cta" type="submit">Senden</button>
+        </form>
+        <p class="direct">Oder direkt: <a href="mailto:booking@derj.de">booking@derj.de</a></p>
+        <div class="social">
+          <a href="https://instagram.com/derj.official" target="_blank" rel="noopener">Instagram ↗</a>
+          <a href="https://soundcloud.com/derj-official" target="_blank" rel="noopener">SoundCloud ↗</a>
+          <a href="https://www.facebook.com/DerJ.official/" target="_blank" rel="noopener">Facebook ↗</a>
+          <a href="https://ra.co/dj/derj" target="_blank" rel="noopener">RA ↗</a>
+          <a href="mailto:booking@derj.de">Mail ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal pages at /impressum.html and /datenschutz.html — links in footer only (per DerJ request, removed from top nav) -->
+
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> DerJ · München</span>
+    <span><a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a></span>
+    <span><a href="#" id="vault-trigger" class="vault-trigger">⬡ Underground</a></span>
+    <span><a href="#hero">Nach oben ↑</a></span>
+  </footer>
+
+  <!-- VAULT -->
+  <div class="vault" id="vault">
+    <button class="vault-close" id="vault-close" aria-label="Schließen">×</button>
+    <div class="vault-gate" id="vault-gate">
+      <div class="vault-box">
+        <div class="eyebrow">Members only</div>
+        <h3>Underground</h3>
+        <p class="lede" style="font-size:.98rem;color:var(--ink)">Privater Bereich für kommende Underground-Partys.</p>
+        <input type="password" id="vault-pw" placeholder="Passwort" autocomplete="off" />
+        <button class="cta" id="vault-enter">Enter</button>
+        <p class="vault-err" id="vault-err"></p>
+      </div>
+    </div>
+    <div class="vault-inside" id="vault-inside">
+      <div class="sunrise"></div>
+      <div class="vault-fx" id="vault-fx"></div>
+      <div class="vault-welcome" id="vault-welcome">
+        <div class="eyebrow">Willkommen im Untergrund</div>
+        <h2>F93 — München</h2>
+        <p>Schön, dass du den Weg hierher gefunden hast. Hier landen die Infos zu den nächsten
+          Underground-Nächten — bevor sie irgendwo sonst stehen. Keine öffentliche Ankündigung,
+          kein Ticket-Link im Feed. Wer hier drin ist, weiß zuerst.</p>
+        <p style="margin-top:1rem;color:#2a1714;font-weight:400;font-size:1.05rem;max-width:42ch;margin-left:auto;margin-right:auto">
+          Trag dich ein und du bist beim nächsten Mal auf der Liste. Datum, Location, Line-Up —
+          alles kommt per Mail, bevor es irgendjemanden sonst erreicht.</p>
+        <!-- TODO: echte Party-Infos / Telegram-Invite / Adresse hier eintragen -->
+        <form class="nl" id="nl-form">
+          <input type="email" id="nl-email" placeholder="deine@email.de" required />
+          <button class="cta" type="submit">Auf die Liste</button>
+        </form>
+        <p class="nl-done" id="nl-done"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script type="importmap">
+  { "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  } }
+  </script>
+
+  <script type="module">
+  document.getElementById('year').textContent = '2026';
+  const loader = document.getElementById('loader');
+  const hideLoader = () => loader.classList.add('done');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasWebGL2 = !!document.createElement('canvas').getContext('webgl2');
+
+  /* ============================================================= */
+  /* MOBILE BURGER NAV                                              */
+  /* ============================================================= */
+  (function initBurger(){
+    const burger=document.getElementById('burger'), links=document.querySelector('nav .links');
+    if(!burger||!links) return;
+    burger.addEventListener('click',()=>{
+      burger.classList.toggle('open'); links.classList.toggle('open');
+    });
+    links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+      burger.classList.remove('open'); links.classList.remove('open');
+    }));
+  })();
+
+  /* ============================================================= */
+  /* PALETTE — fixed contrasting dual-color combos                 */
+  /* ============================================================= */
+  const PALETTES = [
+    {n:'Seagreen · Magenta', a:'#1f8a5b', b:'#ff2db8'},
+    {n:'Mint · Violet',      a:'#74ffb0', b:'#8a2be2'},
+    {n:'Darkblue · Amber',   a:'#0b1e6b', b:'#ffb000'},
+    {n:'Darkblue · Green',   a:'#0b1e6b', b:'#00e676'},
+    {n:'Yellow · Pink',      a:'#ffe600', b:'#ff5fa2'},
+    {n:'Red · White',        a:'#ff2d2d', b:'#f4f4f6'},
+    {n:'Red · Blue',         a:'#ff2d2d', b:'#2d6bff'},
+    {n:'Amber · Magenta',    a:'#ffb000', b:'#ff2db8'},
+    {n:'Teal · Orange',      a:'#00b3a4', b:'#ff7a18'},
+    {n:'Cyan · Red',         a:'#00e5ff', b:'#ff2d55'},
+    {n:'Lime · Purple',      a:'#b6ff00', b:'#9b00ff'},
+    {n:'Petrol · Magenta',   a:'#0a3333', b:'#ff3660'}
+  ];
+  let palIdx = parseInt(localStorage.getItem('derj-pal') ?? '11', 10);
+  if(!(palIdx>=0 && palIdx<PALETTES.length)) palIdx = 11;
+  let COLA = PALETTES[palIdx].a, COLB = PALETTES[palIdx].b;
+
+  const chip = document.getElementById('pal-chip');
+  const menu = document.getElementById('pal-menu');
+  function applyPalette(i, save){
+    palIdx = i; COLA = PALETTES[i].a; COLB = PALETTES[i].b;
+    const r = document.documentElement.style;
+    r.setProperty('--colA',COLA); r.setProperty('--colB',COLB); r.setProperty('--neon',COLB);
+    if(chip) chip.style.background = `linear-gradient(135deg, ${COLA} 0 50%, ${COLB} 50% 100%)`;
+    if(save) localStorage.setItem('derj-pal', String(i));
+    if(window.__derjSetColors) window.__derjSetColors(COLA, COLB);
+  }
+  // build menu
+  PALETTES.forEach((p,i)=>{
+    const o=document.createElement('div'); o.className='pal-opt';
+    o.innerHTML=`<span class="sw" style="background:linear-gradient(135deg,${p.a} 0 50%,${p.b} 50% 100%)"></span>${p.n}`;
+    o.addEventListener('click',()=>{ applyPalette(i,true); menu.classList.remove('open'); });
+    menu.appendChild(o);
+  });
+  if(chip){
+    chip.addEventListener('click',e=>{ e.stopPropagation(); menu.classList.toggle('open'); });
+    document.addEventListener('click',()=>menu.classList.remove('open'));
+  }
+  applyPalette(palIdx, false);
+
+  /* ============================================================= */
+  /* VAULT  (pw hashed) — massacre → sunrise + newsletter            */
+  /* ============================================================= */
+  const VAULT_HASH = 'd9f60118055dfe536ababf8e1705373751f0c5d265a5eead45b207b1651570d9';
+  async function sha256(text){
+    const buf = new TextEncoder().encode(text);
+    const hash = await crypto.subtle.digest('SHA-256', buf);
+    return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  (function initVault(){
+    const v=document.getElementById('vault'), gate=document.getElementById('vault-gate'),
+          inside=document.getElementById('vault-inside'), fx=document.getElementById('vault-fx'),
+          welcome=document.getElementById('vault-welcome'), pw=document.getElementById('vault-pw'),
+          err=document.getElementById('vault-err');
+    let unlocked=false;
+    const open=()=>{ v.classList.add('open'); if(!unlocked) setTimeout(()=>pw.focus(),60); };
+    const close=()=>v.classList.remove('open');
+    document.getElementById('vault-trigger').addEventListener('click',e=>{e.preventDefault();open();});
+    document.getElementById('vault-close').addEventListener('click',close);
+
+    function unlock(){
+      unlocked=true; gate.style.display='none'; inside.classList.add('show');
+      // 1) MASSACRE — intense color/glitch chaos
+      fx.classList.add('on');
+      // 2) calm down → sunrise + welcome
+      setTimeout(()=>{ fx.classList.remove('on'); fx.style.opacity='0'; }, 1700);
+      setTimeout(()=>{ welcome.classList.add('show'); }, 2100);
+    }
+    async function check(){
+      const inputHash = await sha256(pw.value);
+      if(inputHash===VAULT_HASH){ err.textContent=''; unlock(); }
+      else { err.textContent='Falsches Passwort.'; pw.value=''; }
+    }
+    document.getElementById('vault-enter').addEventListener('click',check);
+    pw.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
+
+    const nl=document.getElementById('nl-form'), done=document.getElementById('nl-done');
+    nl.addEventListener('submit',e=>{ e.preventDefault();
+      const email=(document.getElementById('nl-email').value||'').trim();
+      window.location.href=`mailto:booking@derj.de?subject=${encodeURIComponent('Underground Guestlist')}&body=${encodeURIComponent('Bitte auf die Underground-Liste setzen: '+email)}`;
+      done.textContent='Danke — du bist dabei. ✓'; nl.querySelector('input').value='';
+    });
+  })();
+
+  /* ============================================================= */
+  /* TEXT GLITCH — chaotic font-swap within ~1.5cm of cursor        */
+  /* ============================================================= */
+  const GL_FONTS = ['"VT323",monospace','"Major Mono Display",monospace','"Syne Mono",monospace',
+                    '"Black Ops One",cursive','"Wallpoet",cursive','"Orbitron",sans-serif',
+                    '"Chakra Petch",sans-serif','"Anton",sans-serif'];
+  const rFont = ()=>GL_FONTS[(Math.random()*GL_FONTS.length)|0];
+  function splitLetters(root){
+    const walk=node=>{ [...node.childNodes].forEach(ch=>{
+      if(ch.nodeType===3){ const frag=document.createDocumentFragment();
+        let wordSpan=null;
+        for(const c of ch.textContent){ if(c===' '||c==='\n'||c==='\t'){ if(wordSpan){ frag.appendChild(wordSpan); wordSpan=null; } frag.appendChild(document.createTextNode(c)); }
+          else { if(!wordSpan){ wordSpan=document.createElement('span'); wordSpan.className='gl-word'; }
+            const s=document.createElement('span'); s.className='gl'; s.textContent=c; wordSpan.appendChild(s); } }
+        if(wordSpan) frag.appendChild(wordSpan);
+        node.replaceChild(frag,ch);
+      } else if(ch.nodeType===1){ walk(ch); } }); };
+    walk(root); root._letters=[...root.querySelectorAll('.gl')];
+  }
+  // chaotic font-swap WITHOUT changing line height: lock metrics + skew only (no translateY → no vertical jump).
+  // Headings use a much smaller skew — at large font sizes ±6deg causes visible jitter.
+  function chaos(s, colorize){
+    s.style.fontFamily = rFont();
+    s.style.lineHeight = '1';                                   // font-independent → no vertical jitter
+    s.style.display = 'inline-block';
+    const skewMax = s.dataset.heading ? 1.0 : 6.0;             // headings: ±1deg, body: ±6deg
+    const sk=(Math.random()*skewMax*2-skewMax).toFixed(1);
+    s.style.transform = `skewX(${sk}deg)`;                      // horizontal skew only — no translate
+    if(colorize){ s.classList.toggle('blipA', Math.random()<0.5); s.classList.toggle('blip', !s.classList.contains('blipA')); }
+  }
+  function reset(s){ s.style.fontFamily=''; s.style.transform=''; s.classList.remove('blip','blipA'); }
+  let glElements=[];
+  function initTextGlitch(){
+    glElements=[...document.querySelectorAll('.gx')];
+    glElements.forEach(splitLetters);
+    // Tag heading letters so chaos() uses a smaller skew for them (large fonts = more visible displacement)
+    glElements.forEach(el=>{
+      if(el.matches('h2, .spray-title')) el._letters.forEach(s=>s.dataset.heading='1');
+    });
+
+    // Lock each letter's box width AFTER fonts load so font-swap glitches
+    // don't cause horizontal reflow / jumping of neighbouring letters.
+    const lockWidths=()=>{ glElements.forEach(el=>{
+      el._letters.forEach(s=>{ if(!s.dataset.w){ const w=s.getBoundingClientRect().width;
+        if(w>0){ s.style.width=w+'px'; s.dataset.w='1'; } } }); }); };
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(lockWidths);
+    else setTimeout(lockWidths,1500);
+
+    // logo: TV-glitch + font chaos ONLY while hovering
+    const logo=document.getElementById('logo');
+    if(logo){
+      splitLetters(logo);
+      let logoRAF=0;
+      const run=()=>{ logoRAF=requestAnimationFrame(run);
+        logo._letters.forEach(s=>{ if(Math.random()<0.55) chaos(s,true); else reset(s); }); };
+      logo.addEventListener('pointerenter',()=>{ logo.classList.add('tv'); if(!logoRAF) run(); });
+      logo.addEventListener('pointerleave',()=>{ logo.classList.remove('tv'); cancelAnimationFrame(logoRAF); logoRAF=0; logo._letters.forEach(reset); });
+    }
+
+    // tracks letters currently held by the hover effect (so idle blips don't fight it)
+    const hoverLive=new Set();
+
+    // idle COLOR-BLOTCH glitches on headings/body: occasionally one letter flashes a palette color
+    const idlePool=[...document.querySelectorAll('h2.gx, .lede.gx, .eyebrow.gx, .spray-title.gx')];
+    setInterval(()=>{
+      for(let k=0;k<3;k++){
+        const el=idlePool[(Math.random()*idlePool.length)|0]; if(!el||!el._letters||!el._letters.length) continue;
+        const r=el.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) continue;   // only visible
+        const s=el._letters[(Math.random()*el._letters.length)|0]; if(!s||hoverLive.has(s)) continue;
+        const cls=Math.random()<0.5?'blip':'blipA';
+        s.classList.add(cls); if(Math.random()<0.5) s.style.fontFamily=rFont();
+        setTimeout(()=>{ if(!hoverLive.has(s)){ s.classList.remove(cls); s.style.fontFamily=''; } }, 120+Math.random()*180);
+      }
+    }, 480);
+
+    // hover glitch within ~1.5cm of cursor
+    const R=57;                              // ~1.5cm @96dpi
+    let mx=-999,my=-999;
+    addEventListener('pointermove',e=>{ mx=e.clientX; my=e.clientY; },{passive:true});
+    addEventListener('pointerleave',()=>{ mx=-999; my=-999; });
+    (function frame(){
+      requestAnimationFrame(frame);
+      const near=[];
+      for(const el of glElements){
+        const r=el.getBoundingClientRect();
+        if(r.width===0 || r.bottom<-R || r.top>innerHeight+R) continue;
+        if(mx<r.left-R||mx>r.right+R||my<r.top-R||my>r.bottom+R) continue;
+        for(const s of el._letters){ const b=s.getBoundingClientRect();
+          const dx=mx-(b.left+b.width/2), dy=my-(b.top+b.height/2);
+          if(dx*dx+dy*dy<R*R) near.push(s); }
+      }
+      const next=new Set();
+      for(const s of near){ if(Math.random()<0.6) chaos(s,true); next.add(s); }
+      hoverLive.forEach(s=>{ if(!next.has(s)) reset(s); });
+      hoverLive.clear(); next.forEach(s=>hoverLive.add(s));
+    })();
+  }
+
+  (function initForm(){
+    const form=document.getElementById('contact-form'); if(!form) return;
+    form.addEventListener('submit',e=>{ e.preventDefault();
+      const name=(document.getElementById('f-name').value||'').trim();
+      const email=(document.getElementById('f-email').value||'').trim();
+      const msg=(document.getElementById('f-msg').value||'').trim();
+      const subject=encodeURIComponent(`Booking-Anfrage – ${name||'DerJ'}`);
+      const body=encodeURIComponent(`${msg}\n\n— ${name}${email?` (${email})`:''}`);
+      window.location.href=`mailto:booking@derj.de?subject=${subject}&body=${body}`;
+      form.querySelector('button').textContent='Mail geöffnet ✓'; });
+  })();
+
+  if(!reduceMotion) initTextGlitch();
+
+  function enableFallback(reason){ console.warn('[DerJ] fallback:',reason); document.body.classList.add('fallback'); setTimeout(hideLoader,300); }
+  if(reduceMotion || !hasWebGL2) enableFallback(reduceMotion?'reduced-motion':'no-webgl2');
+  else { try{ await boot(); }catch(err){ enableFallback(err&&err.message||err); } }
+
+  /* ============================================================= */
+  async function boot(){
+    const THREE = await import('three');
+    const { EffectComposer } = await import('three/addons/postprocessing/EffectComposer.js');
+    const { RenderPass }     = await import('three/addons/postprocessing/RenderPass.js');
+    const { UnrealBloomPass} = await import('three/addons/postprocessing/UnrealBloomPass.js');
+    const { ShaderPass }     = await import('three/addons/postprocessing/ShaderPass.js');
+    const { OutputPass }     = await import('three/addons/postprocessing/OutputPass.js');
+
+    const gsap=window.gsap, ScrollTrigger=window.ScrollTrigger;
+    if(gsap&&ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
+    const band=(z,c,hw)=>smooth(1-Math.abs(z-c)/hw);
+
+    const lowPerf=matchMedia('(pointer:coarse)').matches||(navigator.hardwareConcurrency||4)<=4||innerWidth<768;
+    let quality=lowPerf?'low':'high';
+    const Q={ high:{hero:2600,tunnel:5200,grid:[96,56],fog:5,dpr:Math.min(devicePixelRatio,2),grain:true,glitch:true,bloom:0.9},
+              low :{hero:1200,tunnel:2600,grid:[48,30],fog:3,dpr:1,                          grain:false,glitch:true,bloom:0.65} };
+    let cfg=Q[quality];
+
+    const canvas=document.getElementById('gl');
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:false,powerPreference:'high-performance'});
+    renderer.setPixelRatio(cfg.dpr); renderer.setSize(innerWidth,innerHeight);
+    renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; renderer.outputColorSpace=THREE.SRGBColorSpace;
+
+    const scene=new THREE.Scene();
+    scene.fog=new THREE.FogExp2(0x0a0a0a,0.0026);
+    const camera=new THREE.PerspectiveCamera(40,innerWidth/innerHeight,0.1,900);
+    camera.position.set(0,0,18);
+
+    const WHITE=new THREE.Color(0xffffff);
+    let colorA=new THREE.Color(COLA), colorB=new THREE.Color(COLB);
+    const sceneCol=new THREE.Color(), bgCol=new THREE.Color(), tmpCol=new THREE.Color();
+    window.__derjSetColors=(a,b)=>{ colorA.set(a); colorB.set(b); };
+
+    const POINT_VERT=`uniform float uTime;uniform float uBeat;uniform float uSize;uniform float uPixel;attribute float aSeed;varying float vSeed;
+      void main(){vSeed=aSeed;vec3 p=position;p.x+=sin(uTime*0.3+aSeed*10.0)*0.4;p.y+=cos(uTime*0.25+aSeed*8.0)*0.4;
+        vec4 mv=modelViewMatrix*vec4(p,1.0);float pulse=1.0+uBeat*0.5*step(0.5,fract(aSeed*3.0));
+        gl_PointSize=uSize*pulse*uPixel*(220.0/max(0.001,-mv.z));gl_Position=projectionMatrix*mv;}`;
+    const POINT_FRAG=`precision highp float;uniform vec3 uColorA;uniform vec3 uColorB;uniform float uFade;uniform float uBeat;varying float vSeed;
+      void main(){vec2 c=gl_PointCoord-0.5;float d=length(c);if(d>0.5)discard;float glow=smoothstep(0.5,0.0,d);
+        vec3 col=mix(uColorA,uColorB,vSeed)+uBeat*0.25;gl_FragColor=vec4(col,glow*uFade);}`;
+    const makePts=size=>new THREE.ShaderMaterial({uniforms:{uTime:{value:0},uBeat:{value:0},uSize:{value:size},uPixel:{value:cfg.dpr},
+      uColorA:{value:new THREE.Color()},uColorB:{value:WHITE.clone()},uFade:{value:1}},
+      vertexShader:POINT_VERT,fragmentShader:POINT_FRAG,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});
+    const ptsGeo=(pos,sd)=>{const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('aSeed',new THREE.BufferAttribute(sd,1));return g;};
+
+    let hero;{const N=cfg.hero,pos=new Float32Array(N*3),sd=new Float32Array(N);
+      for(let i=0;i<N;i++){const r=4+Math.pow(Math.random(),0.6)*8,th=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1);
+        pos[i*3]=r*Math.sin(ph)*Math.cos(th);pos[i*3+1]=r*Math.sin(ph)*Math.sin(th);pos[i*3+2]=r*Math.cos(ph);sd[i]=Math.random();}
+      hero=new THREE.Points(ptsGeo(pos,sd),makePts(2.2));scene.add(hero);}
+    let tunnel;{const N=cfg.tunnel,pos=new Float32Array(N*3),sd=new Float32Array(N);
+      for(let i=0;i<N;i++){const z=lerp(-15,-190,Math.random()),rad=9+Math.random()*8,a=Math.random()*Math.PI*2;
+        pos[i*3]=Math.cos(a)*rad;pos[i*3+1]=Math.sin(a)*rad;pos[i*3+2]=z;sd[i]=Math.random();}
+      tunnel=new THREE.Points(ptsGeo(pos,sd),makePts(1.9));scene.add(tunnel);}
+
+    const LIGHT_Z=-185, NB=6, beams=[];
+    let beamGroup=new THREE.Group(); beamGroup.position.set(0,-32,LIGHT_Z);
+    {
+      const BEAM_VERT=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
+      const BEAM_FRAG=`precision highp float;uniform vec3 uColor;uniform float uInt;uniform float uFade;varying vec2 vUv;
+        void main(){float horiz=smoothstep(0.5,0.0,abs(vUv.x-0.5));float bright=vUv.y;float core=pow(horiz,2.0)*bright;
+          gl_FragColor=vec4(uColor*(0.4+core),core*uInt*uFade);}`;
+      for(let i=0;i<NB;i++){
+        const geo=new THREE.PlaneGeometry(3.0,92); geo.translate(0,46,0);
+        const mat=new THREE.ShaderMaterial({uniforms:{uColor:{value:new THREE.Color()},uInt:{value:0},uFade:{value:0}},
+          vertexShader:BEAM_VERT,fragmentShader:BEAM_FRAG,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide});
+        const m=new THREE.Mesh(geo,mat); m.position.x=lerp(-22,22,i/(NB-1)); m.userData.ang=0; beams.push(m); beamGroup.add(m);
+      }
+      scene.add(beamGroup);
+    }
+    const fan=s=>Array.from({length:NB},(_,i)=>lerp(-s,s,i/(NB-1)));
+    const FORMS=[fan(0.5),fan(0.6).map(v=>-v),Array.from({length:NB},(_,i)=>(i%2?0.42:-0.42)),
+                 Array.from({length:NB},(_,i)=>Math.sin(i*1.3)*0.45),Array.from({length:NB},()=>0.0)];
+    let formIdx=0, formTimer=0;
+
+    let grid;{
+      const GRID_VERT=`uniform float uTime;uniform float uAmp;varying vec2 vUv;varying float vElev;
+        void main(){vUv=uv;vec3 p=position;float e=sin(p.x*0.25+uTime*1.0)*cos(p.y*0.25+uTime*0.8);
+          e+=0.6*sin((p.x+p.y)*0.12+uTime*0.5);p.z+=e*uAmp;vElev=e;
+          gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);}`;
+      const GRID_FRAG=`precision highp float;uniform vec3 uColor;uniform float uFade;varying vec2 vUv;varying float vElev;
+        void main(){vec2 g=abs(fract(vUv*44.0-0.5)-0.5)/fwidth(vUv*44.0);float line=1.0-min(min(g.x,g.y),1.0);
+          float a=line*uFade;if(a<0.01)discard;gl_FragColor=vec4(uColor*(0.55+1.1*abs(vElev)),a);}`;
+      const mat=new THREE.ShaderMaterial({uniforms:{uTime:{value:0},uAmp:{value:0},uColor:{value:new THREE.Color()},uFade:{value:0}},
+        vertexShader:GRID_VERT,fragmentShader:GRID_FRAG,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide});
+      grid=new THREE.Mesh(new THREE.PlaneGeometry(160,100,cfg.grid[0],cfg.grid[1]),mat); grid.position.set(0,0,-262); scene.add(grid);
+    }
+
+    const FOG_FRAG=`precision highp float;uniform float uTime;uniform float uOpacity;uniform float uShear;uniform float uFlow;uniform float uSeed;uniform vec3 uColor;varying vec2 vUv;
+      float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+      float vnoise(vec2 p){vec2 i=floor(p),f=fract(p);float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1));vec2 u=f*f*(3.0-2.0*f);return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}
+      float fbm(vec2 p){float v=0.0,a=0.5;for(int i=0;i<4;i++){v+=a*vnoise(p);p*=2.02;a*=0.5;}return v;}
+      void main(){vec2 uv=vUv;uv.x+=uShear*(uv.y-0.5)*1.3;vec2 p=uv*vec2(3.0,2.0)+vec2(uSeed*7.0,0.0);p+=vec2(uTime*0.025,-uFlow*0.5-uTime*0.015);
+        float n=fbm(p+fbm(p*0.5));n=smoothstep(0.28,0.95,n);
+        float mask=smoothstep(0.0,0.35,uv.x)*smoothstep(1.0,0.62,uv.x)*smoothstep(0.0,0.40,uv.y)*smoothstep(1.0,0.55,uv.y);
+        gl_FragColor=vec4(uColor*(0.5+0.5*n),n*mask*uOpacity);}`;
+    const fogGroup=new THREE.Group();
+    {const base=new THREE.Color(0x223036),n=cfg.fog;
+      for(let i=0;i<n;i++){const z=lerp(-40,-312,i/(n-1));
+        const mat=new THREE.ShaderMaterial({uniforms:{uTime:{value:0},uOpacity:{value:0},uShear:{value:0},uFlow:{value:0},uSeed:{value:i*1.7+0.3},uColor:{value:base.clone()}},
+          vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+          fragmentShader:FOG_FRAG,transparent:true,depthWrite:false,blending:THREE.NormalBlending,side:THREE.DoubleSide});
+        const m=new THREE.Mesh(new THREE.PlaneGeometry(150,100),mat);m.position.set(i%2?6:-6,(i%3-1)*4,z);m.userData.z=z;fogGroup.add(m);}
+      scene.add(fogGroup);}
+
+    const composer=new EffectComposer(renderer); composer.setPixelRatio(cfg.dpr); composer.setSize(innerWidth,innerHeight);
+    composer.addPass(new RenderPass(scene,camera));
+    const bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),cfg.bloom,0.6,0.0); let bloomBase=cfg.bloom; composer.addPass(bloom);
+
+    const GlitchShader={uniforms:{tDiffuse:{value:null},uTime:{value:0},uAmount:{value:0},uBeat:{value:0},uRes:{value:new THREE.Vector2(innerWidth,innerHeight)}},
+      vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+      fragmentShader:`precision highp float;uniform sampler2D tDiffuse;uniform float uTime;uniform float uAmount;uniform float uBeat;uniform vec2 uRes;varying vec2 vUv;
+        float h11(float p){p=fract(p*0.1031);p*=p+33.33;p*=p+p;return fract(p);}
+        float h21(vec2 p){vec3 q=fract(vec3(p.xyx)*0.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}
+        void main(){float amt=clamp(uAmount+uBeat*0.3,0.0,1.0);vec2 uv=vUv;
+          float blocks=14.0+floor(amt*22.0);float row=floor(uv.y*blocks);float t=floor(uTime*12.0);
+          float trig=h11(row+t*1.7);float tear=step(1.0-amt*0.8,trig);uv.x+=(h11(row*3.7+t)-0.5)*0.14*amt*tear;
+          float bar=smoothstep(0.06,0.0,abs(fract(uv.y-uTime*0.2)-0.5));uv.x+=bar*0.03*amt;
+          float ca=(0.004+0.016*amt)*(1.0+uBeat);
+          float r=texture2D(tDiffuse,uv+vec2(ca,0.0)).r;float g=texture2D(tDiffuse,uv).g;float b=texture2D(tDiffuse,uv+vec2(-ca,0.0)).b;
+          vec3 col=vec3(r,g,b);
+          vec2 cell=floor(uv*vec2(30.0,16.0));float drop=h21(cell+t);
+          if(drop>1.0-amt*0.04) col=mix(col,vec3(0.95,0.18,0.34),0.5);
+          col*=mix(1.0,0.93+0.07*sin(uv.y*uRes.y*1.4),amt*0.7);
+          col+=(h21(uv*uRes.xy+t)-0.5)*0.05*amt;
+          gl_FragColor=vec4(col,1.0);}`};
+    const glitchPass=new ShaderPass(GlitchShader); glitchPass.enabled=cfg.glitch; composer.addPass(glitchPass);
+
+    const GrainShader={uniforms:{tDiffuse:{value:null},uTime:{value:0},uAmount:{value:0.06},uVig:{value:1.0}},
+      vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+      fragmentShader:`precision highp float;uniform sampler2D tDiffuse;uniform float uTime;uniform float uAmount;uniform float uVig;varying vec2 vUv;
+        float rnd(vec2 c){return fract(sin(dot(c,vec2(12.9898,78.233)))*43758.5453);}
+        void main(){vec4 c=texture2D(tDiffuse,vUv);c.rgb+=(rnd(vUv+fract(uTime))-0.5)*uAmount;
+          vec2 q=vUv-0.5;c.rgb*=mix(1.0,smoothstep(0.95,0.2,dot(q,q)*uVig*2.0),0.7);gl_FragColor=c;}`};
+    const grainPass=new ShaderPass(GrainShader); grainPass.enabled=cfg.grain; composer.addPass(grainPass);
+    composer.addPass(new OutputPass());
+
+    const scrollProxy={p:0};
+    const Z_BY_ID={hero:18,about:-45,music:-100,lighting:LIGHT_Z,projection:-262,releases:-300,art:-336,contact:-360};
+    let KF=[[0,18],[1,-360]], heroEndP=0.12;
+    function buildKF(){
+      const secs=[...document.querySelectorAll('#scroll-root section[id]')];
+      const max=(document.documentElement.scrollHeight-innerHeight)||1;const kf=[];
+      secs.forEach(s=>{const top=s.getBoundingClientRect().top+scrollY;const p=clamp(top/max,0,1);
+        const z=(s.id in Z_BY_ID)?Z_BY_ID[s.id]:lerp(18,-360,p);kf.push([p,z]);});
+      kf.sort((a,b)=>a[0]-b[0]);if(!kf.length)kf.push([0,18]);
+      if(kf[0][0]>0)kf.unshift([0,kf[0][1]]);kf.push([1,kf[kf.length-1][1]]);KF=kf;
+      heroEndP=secs[1]?clamp((secs[1].getBoundingClientRect().top+scrollY)/max,0.05,0.4):0.12;
+    }
+    function sampleZ(p){for(let i=0;i<KF.length-1;i++){const[p0,z0]=KF[i],[p1,z1]=KF[i+1];if(p<=p1)return lerp(z0,z1,smooth((p-p0)/Math.max(0.0001,p1-p0)));}return KF[KF.length-1][1];}
+    const heroFov=p=>{const e=heroEndP*0.7;return p<e?lerp(82,40,smooth(p/e)):40;};
+
+    const strobeEl=document.getElementById('strobe');
+    const lightning={v:0};
+    function fireLightning(){if(!gsap)return;gsap.killTweensOf(strobeEl);const tl=gsap.timeline();const f=2+((Math.random()*3)|0);
+      for(let i=0;i<f;i++){tl.to(strobeEl,{opacity:0.4+Math.random()*0.5,duration:0.035+Math.random()*0.03});tl.to(strobeEl,{opacity:0,duration:0.05+Math.random()*0.08});
+        if(Math.random()<0.5)tl.to({},{duration:0.04+Math.random()*0.14});}
+      tl.to(strobeEl,{opacity:0,duration:0.2});gsap.fromTo(lightning,{v:1},{v:0,duration:1.1,ease:'power2.out'});}
+    let stormActive=false,stormTimer=0;
+    function scheduleStorm(){if(!stormActive)return;stormTimer=setTimeout(()=>{fireLightning();scheduleStorm();},1000+Math.random()*3400);}
+    const glitchBurst={v:0};
+    function fireGlitchBurst(){if(gsap)gsap.fromTo(glitchBurst,{v:1},{v:0,duration:1.0,ease:'power2.out'});}
+
+    if(gsap&&ScrollTrigger){
+      gsap.to(scrollProxy,{p:1,ease:'none',scrollTrigger:{trigger:'#scroll-root',start:'top top',end:'bottom bottom',scrub:0.6}});
+      document.querySelectorAll('#scroll-root section[id]').forEach(sec=>{
+        ScrollTrigger.create({trigger:sec,start:'top center',end:'bottom center',
+          onToggle:self=>{if(self.isActive)document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+sec.id));}});});
+      ScrollTrigger.create({trigger:'#lighting',start:'top center',end:'bottom center',
+        onToggle:self=>{stormActive=self.isActive;if(stormActive){fireLightning();scheduleStorm();}else{clearTimeout(stormTimer);gsap.to(strobeEl,{opacity:0,duration:0.2});}}});
+      ScrollTrigger.create({trigger:'#projection',start:'top center',end:'bottom center',onEnter:fireGlitchBurst,onEnterBack:fireGlitchBurst});
+      ScrollTrigger.create({trigger:'#art',start:'top bottom',end:'bottom top',onToggle:self=>{sprayActive=self.isActive;if(sprayActive)startSpray();}});
+      gsap.from('#sc-stage',{opacity:0,y:60,scale:0.96,ease:'power2.out',scrollTrigger:{trigger:'#releases',start:'top 70%',end:'top 30%',scrub:true}});
+    } else { addEventListener('scroll',()=>{scrollProxy.p=scrollY/((document.body.scrollHeight-innerHeight)||1);},{passive:true}); }
+
+    const mouse={x:0,y:0,tx:0,ty:0};
+    addEventListener('pointermove',e=>{mouse.tx=(e.clientX/innerWidth-0.5)*2;mouse.ty=(e.clientY/innerHeight-0.5)*2;},{passive:true});
+
+    let sprayActive=false,sprayRAF=0,sctx,scvs;
+    function startSpray(){scvs=document.getElementById('art-canvas');if(!scvs)return;sctx=scvs.getContext('2d');
+      scvs.width=scvs.clientWidth;scvs.height=scvs.clientHeight;if(sprayRAF)return;
+      const tick=()=>{if(!sprayActive){sprayRAF=0;return;}sprayRAF=requestAnimationFrame(tick);
+        sctx.fillStyle='rgba(10,10,10,0.08)';sctx.fillRect(0,0,scvs.width,scvs.height);
+        const cx=scvs.width*(0.3+0.4*Math.abs(Math.sin(performance.now()*0.0004))),cy=scvs.height*0.5;
+        for(let i=0;i<24;i++){const ang=Math.random()*Math.PI*2,r=Math.pow(Math.random(),2)*120;
+          const x=cx+Math.cos(ang)*r,y=cy+Math.sin(ang)*r*0.5;sctx.globalAlpha=0.55;
+          sctx.fillStyle=Math.random()>0.7?'#ffffff':COLB;sctx.beginPath();sctx.arc(x,y,Math.random()*2.2,0,Math.PI*2);sctx.fill();sctx.globalAlpha=1;}};
+      tick();}
+
+    const clock=new THREE.Clock();const veil=document.getElementById('veil');
+    let fps=[],lastCheck=4,downgraded=false,running=true;
+    let pPrev=0,scrollVel=0,fogFlow=0,activity=0,animTime=0;
+    document.addEventListener('visibilitychange',()=>{running=!document.hidden;if(running)loop();});
+
+    function loop(){
+      if(!running)return;requestAnimationFrame(loop);
+      const dt=Math.min(clock.getDelta(),0.05);const t=clock.elapsedTime;const p=scrollProxy.p;
+      const vel=p-pPrev;pPrev=p;scrollVel=lerp(scrollVel,vel,0.18);fogFlow+=vel;
+      const av=Math.min(1,Math.abs(vel)*150);activity=Math.max(av,activity*0.93);
+      const motion=0.12+activity*1.25;animTime+=dt*motion;
+      const lightT=t*0.6;
+      const beat=Math.pow(Math.max(0,Math.sin(t*3.0)),8)*0.6+Math.pow(Math.max(0,Math.sin(t*1.5+1.2)),12)*0.4;
+
+      sceneCol.copy(colorA).lerp(colorB,smooth(p));
+      bgCol.copy(colorA).multiplyScalar(0.14).lerp(tmpCol.copy(colorB).multiplyScalar(0.05),smooth(p));
+      scene.fog.color.copy(bgCol);renderer.setClearColor(bgCol,1);
+
+      camera.position.z=sampleZ(p);
+      mouse.x=lerp(mouse.x,mouse.tx,0.05);mouse.y=lerp(mouse.y,mouse.ty,0.05);
+      camera.position.x=mouse.x*3.5;camera.position.y=-mouse.y*2.6;
+      camera.lookAt(0,0,camera.position.z-30);
+      const fov=heroFov(p);if(Math.abs(camera.fov-fov)>0.01){camera.fov=fov;camera.updateProjectionMatrix();}
+      const cz=camera.position.z;
+
+      hero.rotation.y+=dt*(0.01+motion*0.05);hero.rotation.x+=dt*0.004;
+      hero.material.uniforms.uTime.value=animTime;hero.material.uniforms.uBeat.value=beat*0.2;
+      hero.material.uniforms.uFade.value=band(cz,12,55);hero.material.uniforms.uColorA.value.copy(sceneCol);
+
+      tunnel.material.uniforms.uTime.value=animTime;tunnel.material.uniforms.uBeat.value=beat*0.5;
+      tunnel.material.uniforms.uFade.value=band(cz,-100,115);tunnel.rotation.z+=dt*(0.005+motion*0.04);
+      tunnel.material.uniforms.uColorA.value.copy(sceneCol);
+
+      const lightFade=band(cz,LIGHT_Z,64);
+      const pulse=clamp(Math.abs(scrollVel)*60,0,1);
+      formTimer+=dt;if(formTimer>3.6){formTimer=0;formIdx=(formIdx+1)%FORMS.length;}
+      const target=FORMS[formIdx];const triColor=[colorB,WHITE,colorA];
+      beams.forEach((m,i)=>{
+        const sweep=Math.sin(lightT*0.7+i*0.9)*0.06;
+        const desired=target[i]+sweep+mouse.x*0.5;
+        m.userData.ang=lerp(m.userData.ang,desired,0.06);m.rotation.z=m.userData.ang;
+        m.material.uniforms.uFade.value=lightFade;
+        m.material.uniforms.uInt.value=0.75+beat*0.6+lightning.v*2.0+pulse*0.4;
+        m.material.uniforms.uColor.value.copy(triColor[i%3]);
+      });
+      beamGroup.position.x=mouse.x*6;beamGroup.rotation.z=mouse.x*0.12;
+
+      const gridProx=smooth(clamp((-cz-205)/57,0,1));
+      grid.material.uniforms.uTime.value=t*0.7;
+      grid.material.uniforms.uAmp.value=lerp(2.0,13.0,gridProx)*(0.8+beat*0.2);
+      grid.material.uniforms.uFade.value=band(cz,-262,80);
+      grid.material.uniforms.uColor.value.copy(colorB);
+
+      const shear=clamp(scrollVel*30,-0.4,0.4);
+      fogGroup.children.forEach(m=>{m.quaternion.copy(camera.quaternion);const u=m.material.uniforms;
+        u.uTime.value=t;u.uFlow.value=fogFlow;u.uShear.value=shear;u.uOpacity.value=band(cz,m.userData.z,95)*0.5;});
+
+      if(glitchPass.enabled){const zone=band(cz,-262,95);const base=zone*lerp(0.05,0.4,gridProx);
+        glitchPass.uniforms.uAmount.value=clamp(base+glitchBurst.v*0.7*zone,0,1);
+        glitchPass.uniforms.uBeat.value=beat*zone;glitchPass.uniforms.uTime.value=t;}
+
+      bloom.strength=bloomBase+lightning.v*0.9;
+      veil.style.opacity=clamp((-cz-298)/55,0,0.82).toFixed(3);
+      if(grainPass.enabled)grainPass.uniforms.uTime.value=t;
+
+      composer.render();
+
+      if(quality==='high'&&!downgraded){fps.push(1/Math.max(dt,0.001));
+        if(t-lastCheck>2){const avg=fps.reduce((a,b)=>a+b,0)/fps.length;fps=[];lastCheck=t;
+          if(avg<38){downgraded=true;renderer.setPixelRatio(1);composer.setPixelRatio(1);grainPass.enabled=false;bloomBase=0.6;
+            console.warn('[DerJ] quality downgraded — avg fps',avg.toFixed(0));}}}
+    }
+
+    addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth,innerHeight);composer.setSize(innerWidth,innerHeight);
+      glitchPass.uniforms.uRes.value.set(innerWidth,innerHeight);
+      if(scvs){scvs.width=scvs.clientWidth;scvs.height=scvs.clientHeight;}
+      if(window.ScrollTrigger)ScrollTrigger.refresh();buildKF();});
+
+    buildKF();composer.render();loop();
+    requestAnimationFrame(()=>{if(window.ScrollTrigger)ScrollTrigger.refresh();buildKF();setTimeout(hideLoader,400);});
+  }
+  </script>
+</body>
+</html>
