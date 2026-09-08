@@ -806,7 +806,7 @@
     const lowPerf=matchMedia('(pointer:coarse)').matches||(navigator.hardwareConcurrency||4)<=4||innerWidth<768;
     let quality=lowPerf?'low':'high';
     const Q={ high:{hero:2600,tunnel:5200,grid:[96,56],fog:5,dpr:Math.min(devicePixelRatio,2),grain:true,glitch:true,bloom:0.55},
-              low :{hero:1200,tunnel:2600,grid:[48,30],fog:3,dpr:1,                          grain:false,glitch:false,bloom:0.3} };
+              low :{hero:1800,tunnel:3600,grid:[64,40],fog:4,dpr:Math.min(devicePixelRatio,1.25),grain:true,glitch:true,bloom:0.45} };
     let cfg=Q[quality];
 
     const canvas=document.getElementById('gl');
@@ -1046,7 +1046,7 @@
 
       composer.render();
 
-      if(quality==='high'&&!downgraded){fps.push(1/Math.max(dt,0.001));
+      if(!downgraded){fps.push(1/Math.max(dt,0.001));
         if(t-lastCheck>2){const avg=fps.reduce((a,b)=>a+b,0)/fps.length;fps=[];lastCheck=t;
           if(avg<38){downgraded=true;renderer.setPixelRatio(1);composer.setPixelRatio(1);grainPass.enabled=false;bloomBase=0.35;
             console.warn('[DerJ] quality downgraded — avg fps',avg.toFixed(0));}}}
