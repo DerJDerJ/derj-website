@@ -1,0 +1,152 @@
+/* ============================================================
+   derj-website-vCC — FX layer (performance pass)
+   Palette picker, lightning strobe, light element-level glitch,
+   legal popups, underground trigger, viewport polish.
+   No full-screen mix-blend-mode layers anymore.
+   ============================================================ */
+:root{
+  --colA:#0a3333;
+  --colB:#ff3660;
+  --neon:#ff3660;
+  /* the page is dark by design: declare it so the browser's "auto dark theme"
+     (Android/Chrome "Darken websites") stops re-darkening colours */
+  color-scheme:dark;
+}
+
+/* --- palette picker --- */
+#vcc-pal{position:fixed;left:18px;top:16px;z-index:2147483000}
+/* keep the "DERJ" wordmark clear of the corner chip */
+a[aria-label^="DerJ"]{margin-left:30px}
+/* (R) marks next to "DerJ" removed everywhere (nav, legal, hero) */
+.vcc-reg,[class*="pr-[0.22em]"] > span.absolute{display:none}
+
+#vcc-chip{width:22px;height:22px;border-radius:50%;border:1px solid #ffffff55;cursor:pointer;padding:0;
+  background:linear-gradient(135deg,var(--colA) 0 50%,var(--colB) 50% 100%);
+  box-shadow:0 0 14px -2px var(--colB);transition:transform .2s ease}
+#vcc-chip:hover{transform:scale(1.14)}
+#vcc-menu{position:absolute;top:30px;left:0;display:none;grid-template-columns:1fr 1fr;gap:.35rem;width:264px;
+  padding:.5rem;border-radius:10px;background:#0d0d12;border:1px solid #ffffff26;
+  box-shadow:0 24px 70px -30px #000,0 0 44px -10px var(--colB)}
+#vcc-menu.open{display:grid}
+.vcc-opt{display:flex;align-items:center;gap:.5rem;padding:.5rem .6rem;border-radius:8px;cursor:pointer;
+  font-family:"DM Mono",ui-monospace,monospace;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:#fff;
+  text-shadow:0 1px 4px #000,0 0 3px #000;border:1px solid #0006;transition:filter .15s ease,box-shadow .15s ease}
+.vcc-opt:hover{filter:brightness(1.18)}
+.vcc-opt .sw{width:18px;height:18px;border-radius:50%;flex:0 0 auto;border:1.5px solid #ffffffdd;box-shadow:0 0 10px -1px #000}
+.vcc-opt.active{box-shadow:inset 0 0 0 2px #fff,0 0 20px -6px var(--neon)}
+
+/* --- lightning strobe --- */
+#vcc-strobe{position:fixed;inset:0;z-index:8;pointer-events:none;background:#cfe0ff;opacity:0;mix-blend-mode:screen}
+
+/* --- hero title: chaotic glitch (3-layer RGB split, slice bursts, zap) --- */
+.vcc-title{position:relative;display:inline-block;isolation:isolate}
+.vcc-title .vcc-copy{position:absolute;left:0;top:0;width:100%;height:100%;
+  pointer-events:none;white-space:pre;opacity:0}
+.vcc-title .vcc-c1{color:#ffffff;text-shadow:0 .04em .14em var(--colA);mix-blend-mode:screen;
+  animation:vccGlA 2.1s steps(1,end) infinite}
+.vcc-title .vcc-c2{color:var(--colB);text-shadow:0 .04em .16em var(--colB);mix-blend-mode:screen;
+  animation:vccGlB 1.55s steps(1,end) infinite}
+.vcc-title .vcc-c3{color:var(--colA);filter:brightness(1.8) saturate(1.5);mix-blend-mode:screen;
+  animation:vccGlC 2.8s steps(1,end) infinite}
+@keyframes vccGlA{
+  0%,36%{opacity:0}
+  37%{opacity:1;clip-path:inset(6% 0 68% 0);transform:translate(-.14em,0)}
+  42%{opacity:1;clip-path:inset(50% 0 34% 0);transform:translate(.17em,-.04em)}
+  47%{opacity:1;clip-path:inset(22% 0 62% 0);transform:translate(-.12em,.03em)}
+  52%{opacity:1;clip-path:inset(76% 0 6% 0);transform:translate(.14em,0)}
+  57%{opacity:1;clip-path:inset(2% 0 86% 0);transform:translate(-.18em,0)}
+  61%,100%{opacity:0}
+}
+@keyframes vccGlB{
+  0%,31%{opacity:0}
+  32%{opacity:1;clip-path:inset(18% 0 66% 0);transform:translate(.16em,.02em)}
+  37%{opacity:1;clip-path:inset(62% 0 26% 0);transform:translate(-.18em,0)}
+  42%{opacity:1;clip-path:inset(10% 0 80% 0);transform:translate(.13em,-.03em)}
+  47%{opacity:1;clip-path:inset(46% 0 44% 0);transform:translate(-.15em,.02em)}
+  52%{opacity:1;clip-path:inset(84% 0 2% 0);transform:translate(.17em,0)}
+  55%,100%{opacity:0}
+}
+@keyframes vccGlC{
+  0%,44%{opacity:0}
+  45%{opacity:.95;clip-path:inset(30% 0 56% 0);transform:translate(-.11em,-.02em)}
+  50%{opacity:.95;clip-path:inset(70% 0 16% 0);transform:translate(.13em,.02em)}
+  55%{opacity:.95;clip-path:inset(14% 0 74% 0);transform:translate(-.09em,0)}
+  60%,100%{opacity:0}
+}
+.vcc-title.vcc-zap{animation:vccZap .44s steps(1,end) 1}
+@keyframes vccZap{
+  0%{transform:translate(0,0) skewX(0)}
+  14%{transform:translate(-.09em,.02em) skewX(-6deg);filter:brightness(1.55) contrast(1.3)}
+  28%{transform:translate(.11em,-.03em) skewX(5deg);filter:invert(1)}
+  42%{transform:translate(-.07em,.02em) skewX(-4deg)}
+  56%{transform:translate(.09em,-.02em) skewX(4deg);filter:brightness(1.4)}
+  72%{transform:translate(-.04em,.01em) skewX(-2deg)}
+  100%{transform:translate(0,0) skewX(0)}
+}
+@media (prefers-reduced-motion: reduce){
+  .vcc-title .vcc-copy{display:none}
+  .vcc-title.vcc-zap{animation:none}
+}
+
+/* --- text glitch (per-letter) --- */
+.vcc-word{display:inline-block;white-space:nowrap}
+.vcc-gl{display:inline-block;line-height:1;transition:transform .4s ease,color .4s ease,text-shadow .4s ease}
+.vcc-gl.blip{color:var(--colB);text-shadow:0 0 12px var(--colB)}
+.vcc-gl.blipA{color:var(--colA);text-shadow:0 0 12px var(--colA)}
+.vcc-gl.blip,.vcc-gl.blipA{will-change:transform,color}
+@keyframes vccTv{
+  0%,40%,100%{transform:translateX(0);clip-path:inset(0 0 0 0)}
+  12%{transform:translateX(-3px);clip-path:inset(16% 0 52% 0)}
+  24%{transform:translateX(4px);clip-path:inset(58% 0 12% 0)}
+  36%{transform:translateX(-2px);clip-path:inset(34% 0 30% 0)}
+  52%{transform:translateX(3px);clip-path:inset(44% 0 28% 0)}
+}
+.vcc-tv-host:hover{animation:vccTv .5s steps(1) infinite}
+
+@media (prefers-reduced-motion: reduce){
+  .vcc-tv-host:hover{animation:none}
+}
+
+/* --- legal popups (Impressum / Datenschutz) --- */
+#vcc-legal{position:fixed;inset:0;z-index:20;display:none}
+#vcc-legal.open{display:block}
+.vcc-legal-backdrop{position:absolute;inset:0;background:rgba(4,4,7,.84);backdrop-filter:blur(8px)}
+.vcc-legal-box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(640px,92vw);max-height:84vh;overflow-y:auto;
+  background:#0d0d10;border:1px solid var(--colB);border-radius:14px;padding:2.2rem;
+  box-shadow:0 30px 90px -30px var(--colB);text-align:left}
+.vcc-legal-kicker{font-family:"DM Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--colB)}
+.vcc-legal-box h3{font-family:"Archivo Black","Anton",sans-serif;font-style:italic;text-transform:uppercase;
+  color:#fff;font-size:1.9rem;margin:.25rem 0 1.1rem;letter-spacing:-.01em}
+.vcc-legal-body h4{font-family:"DM Mono",ui-monospace,monospace;font-size:.68rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--colB);margin:1.3rem 0 .35rem}
+.vcc-legal-body p{font-size:.9rem;line-height:1.7;color:#d3cfe0;margin-bottom:.4rem}
+.vcc-legal-x{position:absolute;top:.5rem;right:1rem;background:none;border:none;color:#8f8aa0;
+  font-size:1.9rem;line-height:1;cursor:pointer;z-index:2}
+.vcc-legal-x:hover{color:#fff}
+.vcc-edit{font-size:.72rem !important;color:#8f8aa0 !important;border:1px dashed #ffffff33;
+  border-radius:8px;padding:.6rem .8rem}
+
+/* --- Underground trigger: out of the nav, subtle, bottom-centre --- */
+.btn-hot{display:none !important}
+#vcc-ug{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:2147482000;
+  font-family:"DM Mono",ui-monospace,monospace;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:#8f8aa0;background:#05050780;border:1px solid #ffffff1f;border-radius:999px;padding:6px 14px;
+  cursor:pointer;opacity:.38;backdrop-filter:blur(4px);
+  transition:opacity .25s ease,color .25s ease,border-color .25s ease}
+#vcc-ug:hover{opacity:1;color:var(--colB,#ff4b5c);border-color:var(--colB,#ff4b5c)}
+
+/* --- brand accents hard-coded in the bundle CSS -> follow the picker --- */
+.chip-major{color:var(--colA-lt,#b9c3ff);border-color:var(--colA-55,#4560ff8c)}
+.rays-bg{background:repeating-conic-gradient(at 50% 100%,var(--colB-16,#ff4b5c29) 0deg 1.2deg,#0000 1.2deg 12deg)}
+
+/* --- gigs: scrim much lighter so the tunnel scene actually shows through --- */
+#gigs.scrim:before{background:radial-gradient(#0505073d,#0505071a 45%,#05050700)}
+
+/* --- viewport polish: no sideways scroll + dark scrollbars --- */
+html{overflow-x:clip;scrollbar-color:#31313d #06060a}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:#06060a}
+::-webkit-scrollbar-thumb{background:#31313d;border-radius:8px;border:2px solid #06060a}
+::-webkit-scrollbar-thumb:hover{background:#42424f}
