@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#04040a">
+<title>DerJ — RÄUME (Scroll-Story Test #2)</title>
+<meta http-equiv="cache-control" content="no-cache">
+<link rel="stylesheet" href="./fonts/fonts.css?v=7">
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/jsm/"}}
+</script>
+<style>
+:root{
+  --colA:#0a3333; --colB:#ff3660; --bg:#04040a; --ink:#eceae4; --mut:#8b8894;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+#stage{position:relative;z-index:2;pointer-events:none}
+
+/* scroll length: one screen per room */
+#scroll{height:700vh}
+
+/* ---- text beats ---- */
+.beat{position:fixed;inset:0;display:flex;align-items:center;opacity:0;will-change:opacity,transform}
+.beat .inner{position:relative;width:100%;max-width:1400px;margin:0 auto;padding:0 6vw}
+.beat .inner>*{position:relative;z-index:2}
+/* soft shadow channel: keeps the copy readable over the projection, no visible box */
+.beat .inner::before{content:'';position:absolute;inset:-14% -8%;z-index:1;pointer-events:none;
+  background:radial-gradient(62% 58% at 22% 54%, rgba(4,4,10,.90) 0%, rgba(4,4,10,.60) 46%, rgba(4,4,10,0) 80%)}
+.beat.right .inner::before{background:radial-gradient(62% 58% at 78% 54%, rgba(4,4,10,.90) 0%, rgba(4,4,10,.60) 46%, rgba(4,4,10,0) 80%)}
+.beat.center .inner::before{background:radial-gradient(72% 58% at 50% 54%, rgba(4,4,10,.88) 0%, rgba(4,4,10,.55) 50%, rgba(4,4,10,0) 82%)}
+.beat .num{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--colB);margin-bottom:14px}
+.beat h2{font-family:"Anton",sans-serif;font-size:clamp(2.2rem,6.4vw,6rem);line-height:.94;margin:0 0 18px;text-transform:uppercase;letter-spacing:-.01em}
+.beat h2 em{font-style:normal;color:var(--colB)}
+.beat p{font-size:clamp(15px,1.15vw,19px);line-height:1.6;max-width:32ch;color:#cfccd8;margin:0}
+.beat p strong{color:var(--ink)}
+.beat.right{justify-content:flex-end;text-align:right}
+.beat.right .inner{display:flex;justify-content:flex-end}
+.beat.right p{margin-left:auto}
+.beat.center{text-align:center}
+.beat.center .inner{display:flex;flex-direction:column;align-items:center}
+.beat.center p{margin:0 auto}
+
+.hero-title{font-family:"Archivo Black",sans-serif;font-size:clamp(3.2rem,15vw,13rem);line-height:.86;margin:0;letter-spacing:-.02em}
+.hero-title .gl{color:var(--colB)}
+
+/* ---- chrome ---- */
+#rail{position:fixed;left:22px;top:50%;transform:translateY(-50%);z-index:6;display:none;flex-direction:column;gap:9px}
+@media(min-width:1100px){#rail{display:flex}}
+#rail a{display:flex;align-items:center;gap:10px;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#5d5b68;text-decoration:none;transition:color .3s}
+#rail a .dot{width:22px;height:1px;background:#33333d;transition:.3s}
+#rail a.on{color:var(--colB)}
+#rail a.on .dot{width:38px;background:var(--colB)}
+
+#bar{position:fixed;left:0;bottom:0;height:2px;width:100%;background:#1b1b22;z-index:7}
+#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--colA),var(--colB))}
+
+#top{position:fixed;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+#top .brand{color:var(--ink);font-family:"Unbounded",sans-serif;letter-spacing:.08em}
+#top .brand b{color:var(--colB)}
+#top .tag{color:#6a6874}
+
+#chip{position:fixed;right:22px;bottom:22px;z-index:8;width:52px;height:52px;border-radius:50%;border:1px solid #2a2a34;background:#0d0d13;cursor:pointer;padding:0}
+#chip i{position:absolute;inset:6px;border-radius:50%;background:conic-gradient(var(--colA) 0 50%,var(--colB) 50% 100%)}
+#menu{position:fixed;right:22px;bottom:84px;z-index:8;width:230px;max-height:66vh;overflow:auto;background:#0f0f15f2;border:1px solid #2a2a34;border-radius:12px;padding:6px;display:none}
+#menu.open{display:block}
+#menu button{display:flex;align-items:center;gap:9px;width:100%;text-align:left;background:none;border:0;color:#d9d6e2;font:12px/1.2 "DM Mono",monospace;padding:9px 10px;border-radius:8px;cursor:pointer}
+#menu button:hover{background:#181820}
+#menu button.on{background:#1d1d26;color:var(--colB)}
+#menu button i{width:22px;height:22px;border-radius:50%;background:conic-gradient(var(--ca) 0 50%,var(--cb) 50% 100%)}
+#hint{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:6;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:#6a6874}
+#hint b{color:var(--colB)}
+@media(max-width:640px){#hint{display:none}}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div id="top">
+  <div class="brand">DER<b>J</b></div>
+  <div class="tag" id="chap">raum 01 · ankunft</div>
+</div>
+
+<nav id="rail"></nav>
+
+<div id="stage">
+  <section class="beat center" data-i="0" data-open="-0.02" data-close="0.14">
+    <div class="inner">
+      <div class="num">dj · licht-designer · veranstalter</div>
+      <h1 class="hero-title"><span>DER</span><span class="gl">J</span></h1>
+      <p style="margin-top:22px;max-width:30ch;text-align:center">Sechs Räume. Eine Nacht. Von der Dunkelheit bis zum letzten Beam.</p>
+    </div>
+  </section>
+
+  <section class="beat left" data-i="1" data-open="0.13" data-close="0.31">
+    <div class="inner">
+      <div class="num">raum 02 — sound</div>
+      <h2>Die Anlage<br><em>wacht auf</em></h2>
+      <p><strong>Treibender, hypnotischer Techno.</strong> Lange Afterhours, verspielte Übergänge, immer tanzbar — ein Set, das auch mal 17,5 std gehen kann.</p>
+    </div>
+  </section>
+
+  <section class="beat right" data-i="2" data-open="0.30" data-close="0.48">
+    <div class="inner"><div>
+      <div class="num">raum 03 — licht</div>
+      <h2>Haze trägt<br><em>das Licht</em></h2>
+      <p>Beams schneiden Formationen in den Nebel. Atmosphäre entsteht nicht aus Effekt, sondern aus Programmierung.</p>
+    </div></div>
+  </section>
+
+  <section class="beat left" data-i="3" data-open="0.47" data-close="0.65">
+    <div class="inner">
+      <div class="num">raum 04 — mapping</div>
+      <h2>Die Wand<br>wird <em>Leinwand</em></h2>
+      <p>Projection Mapping — pixelgenau. Eine Wand bleibt nicht Wand. Sie wird Bild, Rhythmus, Stimmung.</p>
+    </div>
+  </section>
+
+  <section class="beat right" data-i="4" data-open="0.64" data-close="0.82">
+    <div class="inner"><div>
+      <div class="num">raum 05 — kunst</div>
+      <h2>Aerosol,<br>Schablone, <em>Wall</em></h2>
+      <p>Die dritte Disziplin. Dieselbe Energie, die im Set nach vorne drückt, landet hier auf der Wand.</p>
+    </div></div>
+  </section>
+
+  <section class="beat center" data-i="5" data-open="0.81" data-close="1.02">
+    <div class="inner">
+      <div class="num">raum 06 — kontakt</div>
+      <h2>Let us <em>dance</em>.</h2>
+      <p style="text-align:center">booking@derj.de<br><span style="color:#8b8894">stay healthy. stay hydrated.</span></p>
+    </div>
+  </section>
+</div>
+
+<div id="scroll"></div>
+
+<div id="hint">scrollen <b>→</b> durch die räume</div>
+<div id="bar"><i></i></div>
+
+<button id="chip" aria-label="Farbpalette wählen" title="Farbpalette"><i></i></button>
+<div id="menu"></div>
+
+<script type="module" src="./rooms.js?v=7"></script>
+</body>
+</html>
